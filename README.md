@@ -19,7 +19,7 @@ Go to the release page and download the latest release: https://github.com/mdpad
 ## Examples
 ```console
 % ka -h
-ka 0.4.0
+ka 0.5.0
 
 USAGE:
     ka [SUBCOMMAND]
