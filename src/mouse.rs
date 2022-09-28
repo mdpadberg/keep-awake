@@ -51,7 +51,6 @@ impl MySubCommand for Mouse {
             loop {
                 let a = rng.gen_range(0..width);
                 let b = rng.gen_range(0..height);
-                println!("{},{} ", a,b);
                 thread::sleep(Duration::from_secs(interval));
                 enigo.mouse_move_to(
                     a,
