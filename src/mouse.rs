@@ -2,7 +2,6 @@ use std::{thread, time::Duration};
 
 use crate::cli::MySubCommand;
 use clap::{Arg, ArgMatches, Command};
-use enigo::{Enigo, MouseControllable};
 use rand::{thread_rng, Rng};
 
 pub struct Mouse;
@@ -47,15 +46,15 @@ impl MySubCommand for Mouse {
             interval.parse::<u64>(),
         ) {
             let mut rng = thread_rng();
-            let mut enigo = Enigo::new();
+            let mouse = mouse_rs::Mouse::new();
             loop {
                 let a = rng.gen_range(0..width);
                 let b = rng.gen_range(0..height);
                 thread::sleep(Duration::from_secs(interval));
-                enigo.mouse_move_to(
+                mouse.move_to(
                     a,
                     b,
-                );
+                ).expect("Unable to move mouse");
             }
         } else {
             eprintln!("Could not parse input width: {}, height: {}, interval:{}. Did you configure a valid number?", width, height, interval);

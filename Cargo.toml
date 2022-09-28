@@ -8,5 +8,5 @@ authors = ["mdpadberg <mdpadberg@protonmail.com>"]
 
 [dependencies]
 clap = "3.2.22"
-enigo = "0.0.14"
+mouse-rs = "0.4"
 rand = "0.8.5"
