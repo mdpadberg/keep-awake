@@ -42,6 +42,9 @@ jobs:
     - name: Set RELEASE_VERSION
       shell: bash
       run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+    - name: Install libxdo for enigo
+      shell: bash
+      run: sudo apt install libxdo-dev
     - name: Checkout project
       uses: actions/checkout@v2
     - name: Install Rust with cargo
