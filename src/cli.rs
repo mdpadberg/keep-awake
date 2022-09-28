@@ -9,6 +9,8 @@ pub trait MySubCommand {
 
 pub fn parse() {
     let matches = Command::new("keep-awake")
+        .bin_name("keep-awake")
+        .version(env!("CARGO_PKG_VERSION"))
         .about("Keep you machine awake")
         .arg_required_else_help(true)
         .subcommands(vec![Mouse::command()])

@@ -1,0 +1,120 @@
+name: tags
+
+on:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  #devide in test, build, lint, create release, upload artifacts, etc
+  create_release:
+    name: Create release
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+  build_release:
+    name: Build release
+    needs: [create_release]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+        - os: macos-latest
+          rust-target: x86_64-apple-darwin
+        - os: macos-latest
+          rust-target: aarch64-apple-darwin
+        - os: ubuntu-latest
+          rust-target: x86_64-unknown-linux-gnu
+        - os: windows-latest
+          rust-target: x86_64-pc-windows-gnu
+    steps:
+    - name: Set RELEASE_VERSION
+      shell: bash
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+    - name: Checkout project
+      uses: actions/checkout@v2
+    - name: Install Rust with cargo
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        target: ${{ matrix.rust-target }}
+    - name: Run unit tests
+      run: cargo test --verbose
+#    - name: Run integration tests
+#      run: cargo test -- --include-ignored
+    - name: Version bump
+      shell: bash
+      run: |
+        cargo install cargo-edit
+        cargo set-version ${{ env.RELEASE_VERSION }}
+    - name: Build
+      shell: bash
+      run: cargo build --release --target ${{ matrix.rust-target }}
+    - name: Build archive
+      shell: bash
+      run: |
+        if [ "${{ matrix.os }}" = "windows-latest" ]; then
+          archive_name="keep-awake-${{ env.RELEASE_VERSION }}-${{ matrix.rust-target }}.zip"
+          cp target/${{ matrix.rust-target }}/release/keep-awake.exe .
+          7z a "$archive_name" "keep-awake.exe"
+          echo "ASSET=$archive_name" >> $GITHUB_ENV
+        else
+          archive_name="keep-awake-${{ env.RELEASE_VERSION }}-${{ matrix.rust-target }}.tar.gz"
+          cp target/${{ matrix.rust-target }}/release/keep-awake .
+          tar czf "$archive_name" "keep-awake"
+          echo "ASSET=$archive_name" >> $GITHUB_ENV
+        fi
+    - name: Upload release archive
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create_release.outputs.upload_url }}
+        asset_path: ${{ env.ASSET }}
+        asset_name: ${{ env.ASSET }}
+        asset_content_type: application/octet-stream
+  push_version_bump:
+    name: Push version bump
+    needs: [build_release]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set RELEASE_VERSION
+      shell: bash
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+    - name: Checkout project
+      uses: actions/checkout@v3
+      with:
+        ref: 'main'
+    - name: Push version bump
+      run: |
+        git config --global user.name 'Github tags action'
+        git config --global user.email '43384430+mdpadberg@users.noreply.github.com'
+        git add Cargo.toml
+        git commit -m "version bump to ${{ env.RELEASE_VERSION }}"
+        git push 
+  trigger_tap:
+    name: Trigger homebrew-tap
+    needs: [build_release]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.PAT_TOKEN }}
+        script: |
+          await github.rest.actions.createWorkflowDispatch({
+            owner: 'mdpadberg',
+            repo: 'homebrew-tap',
+            workflow_id: 'create-formula.yml',
+            ref: 'main'
+          })
