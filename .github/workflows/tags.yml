@@ -71,14 +71,14 @@ jobs:
       shell: bash
       run: |
         if [ "${{ matrix.os }}" = "windows-latest" ]; then
-          archive_name="keep-awake-${{ env.RELEASE_VERSION }}-${{ matrix.rust-target }}.zip"
-          cp target/${{ matrix.rust-target }}/release/keep-awake.exe .
-          7z a "$archive_name" "keep-awake.exe"
+          archive_name="ka-${{ env.RELEASE_VERSION }}-${{ matrix.rust-target }}.zip"
+          cp target/${{ matrix.rust-target }}/release/ka.exe .
+          7z a "$archive_name" "ka.exe"
           echo "ASSET=$archive_name" >> $GITHUB_ENV
         else
-          archive_name="keep-awake-${{ env.RELEASE_VERSION }}-${{ matrix.rust-target }}.tar.gz"
-          cp target/${{ matrix.rust-target }}/release/keep-awake .
-          tar czf "$archive_name" "keep-awake"
+          archive_name="ka-${{ env.RELEASE_VERSION }}-${{ matrix.rust-target }}.tar.gz"
+          cp target/${{ matrix.rust-target }}/release/ka .
+          tar czf "$archive_name" "ka"
           echo "ASSET=$archive_name" >> $GITHUB_ENV
         fi
     - name: Upload release archive
@@ -97,7 +97,7 @@ jobs:
           git config --global user.email '43384430+mdpadberg@users.noreply.github.com'
           git add Cargo.toml
           git commit -m "version bump to ${{ env.RELEASE_VERSION }}"
-          git push
+          git push origin HEAD:master --force
         fi
   trigger_tap:
     name: Trigger homebrew-tap
@@ -111,6 +111,6 @@ jobs:
           await github.rest.actions.createWorkflowDispatch({
             owner: 'mdpadberg',
             repo: 'homebrew-tap',
-            workflow_id: 'create-formula.yml',
+            workflow_id: 'create-ka-formula.yml',
             ref: 'main'
           })

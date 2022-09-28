@@ -1,16 +1,16 @@
-# Keep-awake
+# Keep-awake (ka)
 Keep-awake is a cli tool that can be used to keep your machine awake.
 
 ## Install
 
 ### macOS
 ```
-brew install mdpadberg/tap/keep-awake
+brew install mdpadberg/tap/ka
 ```
 
 ### Linux
 ```
-brew install mdpadberg/tap/keep-awake
+brew install mdpadberg/tap/ka
 ```
 
 ### Windows   
@@ -18,11 +18,11 @@ Go to the release page and download the latest release: https://github.com/mdpad
 
 ## Examples
 ```console
-% keep-awake -h
-keep-awake 0.1.2
+% ka -h
+ka 0.4.0
 
 USAGE:
-    keep-awake [SUBCOMMAND]
+    ka [SUBCOMMAND]
 
 OPTIONS:
     -h, --help       Print help information
@@ -38,9 +38,9 @@ SUBCOMMANDS:
 Use mouse to keep your machine awake
 
 ```console
-% keep-awake mouse -h
+% ka mouse -h
 USAGE:
-    keep-awake mouse [OPTIONS]
+    ka mouse [OPTIONS]
 
 OPTIONS:
     -h, --help                   Print help information
