@@ -1,0 +1,12 @@
+[package]
+name = "keep-awake"
+version = "0.1.0"
+edition = "2021"
+authors = ["mdpadberg <mdpadberg@protonmail.com>"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = "3.2.22"
+enigo = "0.0.14"
+rand = "0.8.5"
