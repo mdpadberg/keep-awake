@@ -1,6 +1,6 @@
 [package]
 name = "ka"
-version = "0.5.0"
+version = "0.6.0"
 edition = "2021"
 authors = ["mdpadberg <mdpadberg@protonmail.com>"]
 
@@ -10,3 +10,7 @@ authors = ["mdpadberg <mdpadberg@protonmail.com>"]
 clap = "3.2.22"
 mouse-rs = "0.4"
 rand = "0.8.5"
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+dirs = "4.0.0"
+anyhow = "1.0.62"
