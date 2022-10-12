@@ -19,7 +19,7 @@ Go to the release page and download the latest release: https://github.com/mdpad
 ## Examples
 ```console
 % ka -h
-ka 0.5.0
+ka 0.7.0
 
 USAGE:
     ka [SUBCOMMAND]
@@ -29,8 +29,10 @@ OPTIONS:
     -V, --version    Print version information
 
 SUBCOMMANDS:
-    help     Print this message or the help of the given subcommand(s)
-    mouse    Use mouse to keep your machine awake
+    help           Print this message or the help of the given subcommand(s)
+    keyboard       Use keyboard to keep your machine awake (default tab & windows/super/command
+    mouse          Use mouse to keep your machine awake
+    programname    Set name for this program
 
 ```
 
@@ -48,4 +50,33 @@ OPTIONS:
         --interval <interval>    set a time interval in seconds on how often you want to run this
                                  [default: 60]
         --width <width>          set your monitors width in pixels [default: 1920]
+```
+
+### Subcommand: Keyboard
+Use keyboard to keep your machine awake [default tab & windows/super/command]
+
+```console
+% ka keyboard -h
+USAGE:
+    ka keyboard [OPTIONS]
+
+OPTIONS:
+    -h, --help                   Print help information
+        --interval <interval>    set a time interval in seconds on how often you want to run this
+                                 [default: 60]
+```
+
+### Subcommand: Programname
+Set name for this program
+
+```console
+% ka programname -h
+USAGE:
+    ka programname <name>
+
+ARGS:
+    <name>    Set name for this program
+
+OPTIONS:
+    -h, --help    Print help information
 ```
