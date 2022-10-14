@@ -3,15 +3,18 @@ Keep-awake is a cli tool that can be used to keep your machine awake.
 
 ## Install
 
-### macOS
-```
-brew install mdpadberg/tap/ka
-```
-
 ### Linux
 ```
 brew install mdpadberg/tap/ka
 ```
+
+### macOS
+```
+brew install mdpadberg/tap/ka
+```
+Note:
+Keep awake is a fully open-sourced project and will never collect any user data! However if you want to use the keyboard function, you need to enable Accessibility permissions. Add your default terminal you're using in the allowed Accessibility apps:
+![screenshot of Accessibility menus in macos](macos-security-and-privacy.png)
 
 ### Windows   
 Go to the release page and download the latest release: https://github.com/mdpadberg/keep-awake/releases
