@@ -10,7 +10,7 @@ brew install mdpadberg/tap/ka
 
 ### Windows   
 ```
-scoop bucket add ka https://github.com/mdpadberg/scoop-bucket.git
+scoop bucket add mdpadberg https://github.com/mdpadberg/scoop-bucket.git
 scoop install ka
 ```
 
