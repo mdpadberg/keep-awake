@@ -17,7 +17,12 @@ Keep awake is a fully open-sourced project and will never collect any user data!
 ![screenshot of Accessibility menus in macos](macos-security-and-privacy.png)
 
 ### Windows   
-Go to the release page and download the latest release: https://github.com/mdpadberg/keep-awake/releases
+```
+scoop bucket add ka https://github.com/mdpadberg/scoop-bucket.git
+scoop install ka
+```
+
+> :warning: Could be the case that you need to run your terminal in admin mode to make mcf work
 
 ## Examples
 ```console
