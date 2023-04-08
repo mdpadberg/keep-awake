@@ -14,7 +14,7 @@ scoop bucket add mdpadberg https://github.com/mdpadberg/scoop-bucket.git
 scoop install ka
 ```
 
-> :warning: Could be the case that you need to run your terminal in admin mode to make mcf work
+> :warning: Could be the case that you need to run your terminal in admin mode to make ka work
 
 ### macOS
 ```
