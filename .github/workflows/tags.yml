@@ -125,7 +125,7 @@ jobs:
         script: |
           await github.rest.actions.createWorkflowDispatch({
             owner: 'mdpadberg',
-            repo: ' scoop-bucket',
+            repo: 'scoop-bucket',
             workflow_id: 'create-ka-json.yml',
             ref: 'main'
           })
