@@ -1,0 +1,13 @@
+name: ci-cargo-audit
+on:
+  schedule:
+    - cron: '0 0 * * 1'
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+      - uses: rustsec/audit-check@v1.4.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
