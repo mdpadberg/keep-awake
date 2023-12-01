@@ -30,5 +30,7 @@ jobs:
       with:
         toolchain: stable
         target: ${{ matrix.rust-target }}
+    - name: Run build
+      run: cargo build
     - name: Run unit tests
       run: cargo test --verbose
