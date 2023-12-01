@@ -15,3 +15,6 @@ serde = { version = "1.0", features = ["derive"] }
 dirs = "4.0.0"
 anyhow = "1.0.62"
 enigo = "0.0.14"
+
+[dev-dependencies]
+assert_cmd = "2.0.12"
