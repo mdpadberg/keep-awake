@@ -6,13 +6,12 @@ pub struct ProgramName;
 impl MySubCommand for ProgramName {
     const NAME: &'static str = "programname";
 
-    fn command() -> clap::Command<'static> {
+    fn command() -> clap::Command {
         Command::new(ProgramName::NAME)
             .about("Set name for this program")
             .arg(
                 Arg::new("name")
                     .help("Set name for this program")
-                    .takes_value(true)
                     .required(true),
             )
     }

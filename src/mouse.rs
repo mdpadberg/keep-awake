@@ -9,28 +9,25 @@ pub struct Mouse;
 impl MySubCommand for Mouse {
     const NAME: &'static str = "mouse";
 
-    fn command() -> clap::Command<'static> {
+    fn command() -> clap::Command {
         Command::new(Mouse::NAME)
             .about("Use mouse to keep your machine awake")
             .arg(
                 Arg::new("width")
                     .help("set your monitors width in pixels")
                     .long("width")
-                    .takes_value(true)
                     .default_value("1920"),
             )
             .arg(
                 Arg::new("height")
                     .help("set your monitors height in pixels")
                     .long("height")
-                    .takes_value(true)
                     .default_value("1080"),
             )
             .arg(
                 Arg::new("interval")
                     .help("set a time interval in seconds on how often you want to run this")
                     .long("interval")
-                    .takes_value(true)
                     .default_value("60"),
             )
     }

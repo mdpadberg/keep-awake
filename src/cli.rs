@@ -3,20 +3,18 @@ use clap::{ArgMatches, Command};
 
 pub trait MySubCommand {
     const NAME: &'static str;
-    fn command() -> Command<'static>;
+    fn command() -> Command;
     fn action(args: &ArgMatches);
 }
 
 pub fn parse() {
-    let settings = Settings::load();
-    let application_name = if settings.is_some() {
-        settings.unwrap().application_name
-    } else {
-        String::from("ka")
-    };
+    let settings = Settings::load().unwrap_or(Settings {
+        application_name: String::from("ka"),
+    });
+    let application_name: &str = settings.application_name.leak();
 
-    let matches = Command::new(&application_name)
-        .bin_name(&application_name)
+    let matches = Command::new(application_name)
+        .bin_name(application_name)
         .version(env!("CARGO_PKG_VERSION"))
         .about("Keep you machine awake")
         .arg_required_else_help(true)

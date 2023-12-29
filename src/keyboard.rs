@@ -9,14 +9,13 @@ pub struct Keyboard;
 impl MySubCommand for Keyboard {
     const NAME: &'static str = "keyboard";
 
-    fn command() -> clap::Command<'static> {
+    fn command() -> clap::Command {
         Command::new(Keyboard::NAME)
             .about("Use keyboard to keep your machine awake [default tab & windows/super/command]")
             .arg(
                 Arg::new("interval")
                     .help("set a time interval in seconds on how often you want to run this")
                     .long("interval")
-                    .takes_value(true)
                     .default_value("60"),
             )
     }

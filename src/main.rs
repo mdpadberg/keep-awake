@@ -20,18 +20,17 @@ mod tests {
     let expected_output = format!(
         r###"Keep you machine awake
 
-USAGE:
-    ka [SUBCOMMAND]
+Usage: ka [COMMAND]
 
-OPTIONS:
-    -h, --help       Print help information
-    -V, --version    Print version information
+Commands:
+  mouse        Use mouse to keep your machine awake
+  programname  Set name for this program
+  keyboard     Use keyboard to keep your machine awake [default tab & windows/super/command]
+  help         Print this message or the help of the given subcommand(s)
 
-SUBCOMMANDS:
-    help           Print this message or the help of the given subcommand(s)
-    keyboard       Use keyboard to keep your machine awake [default tab & windows/super/command]
-    mouse          Use mouse to keep your machine awake
-    programname    Set name for this program
+Options:
+  -h, --help     Print help
+  -V, --version  Print version
 "###
     );
     let actual_output = String::from_utf8(cmd.assert().get_output().to_owned().stdout).unwrap();
