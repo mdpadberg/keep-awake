@@ -1,7 +1,7 @@
 name: ci-cargo-audit
 on:
   schedule:
-    - cron: '0 0 * * 1'
+    - cron: '0 0 * * 2'
 jobs:
   audit:
     runs-on: ubuntu-latest
