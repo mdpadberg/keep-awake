@@ -9,7 +9,7 @@ authors = ["mdpadberg <mdpadberg@protonmail.com>"]
 [dependencies]
 clap = { version = "4.5.4", features = ["derive"] }
 anyhow = "1.0.82"
-enigo = "0.2.0"
+enigo = "0.2.1"
 chrono = "0.4.38"
 rand = "0.8.5"
 
