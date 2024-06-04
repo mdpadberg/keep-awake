@@ -6,12 +6,6 @@ Keep-awake is a cli tool that can be used to keep your machine awake.
 brew install mdpadberg/tap/ka
 ```
 
-> :warning: Linux users may have to install `libxdo-dev` if they are using `X11`.   
-Debian-based distros: apt-get install libxdo-dev  
-On Arch: pacman -S xdotool  
-On Fedora: dnf install libX11-devel libxdo-devel  
-On Gentoo: emerge -a xdotool  
-
 ## Install on Windows
 ```
 scoop bucket add mdpadberg https://github.com/mdpadberg/scoop-bucket.git
