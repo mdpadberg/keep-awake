@@ -8,18 +8,18 @@ on:
 jobs:
   call-workflow-clippy:
     name: run clippy github action
-    uses: mdpadberg/keep-awake/.github/workflows/clippy.yml
+    uses: ./.github/workflows/clippy.yml
     secrets: 
       token: ${{ secrets.GITHUB_TOKEN }}
   call-workflow-unit-tests:
     name: run unit tests
-    uses: mdpadberg/keep-awake/.github/workflows/unit-tests.yml
+    uses: ./.github/workflows/unit-tests.yml
   call-workflow-create-release:
     name: run create release
     permissions:
       contents: write
     needs: [call-workflow-clippy, call-workflow-unit-tests]
-    uses: mdpadberg/keep-awake/.github/workflows/create-release.yml
+    uses: ./.github/workflows/create-release.yml
     with:
       release-version: ${{ github.ref_name }}
     secrets: 
@@ -29,7 +29,7 @@ jobs:
     permissions:
       contents: write
     needs: [call-workflow-create-release]
-    uses: mdpadberg/keep-awake/.github/workflows/build-release.yml
+    uses: ./.github/workflows/build-release.yml
     with:
       release-version: ${{ github.ref_name }}
       binary-name: ka
@@ -38,7 +38,7 @@ jobs:
   call-workflow-trigger-workflow-in-other-repo-homebrew:
     name: trigger homebrew-tap
     needs: [call-workflow-build-release]
-    uses: mdpadberg/keep-awake/.github/workflows/trigger-workflow-in-other-repo.yml 
+    uses: ./.github/workflows/trigger-workflow-in-other-repo.yml 
     with:
       owner: mdpadberg
       repo: homebrew-tap
@@ -49,7 +49,7 @@ jobs:
   call-workflow-trigger-workflow-in-other-repo-scoop:
     name: trigger scoop-bucket
     needs: [call-workflow-build-release]
-    uses: mdpadberg/keep-awake/.github/workflows/trigger-workflow-in-other-repo.yml
+    uses: ./.github/workflows/trigger-workflow-in-other-repo.yml
     with:
       owner: mdpadberg
       repo: scoop-bucket
