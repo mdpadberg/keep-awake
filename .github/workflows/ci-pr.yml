@@ -7,9 +7,9 @@ on:
 jobs:
   call-workflow-clippy:
     name: run clippy github action
-    uses: mdpadberg/keep-awake/.github/workflows/clippy.yml@main
+    uses: mdpadberg/keep-awake/.github/workflows/clippy.yml
     secrets: 
       token: ${{ secrets.GITHUB_TOKEN }}
   call-workflow-unit-tests:
     name: run unit tests
-    uses: mdpadberg/keep-awake/.github/workflows/unit-tests.yml@main
+    uses: mdpadberg/keep-awake/.github/workflows/unit-tests.yml
