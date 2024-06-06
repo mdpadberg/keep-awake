@@ -23,12 +23,6 @@ jobs:
         if [ "${{ matrix.os }}" = "windows-latest" ]; then
           git config --global core.autocrlf false
         fi
-    - name: Install libxdo on ubuntu for enigo
-      shell: bash
-      run: |
-        if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
-          sudo apt install libxdo-dev
-        fi
     - name: Checkout project
       uses: actions/checkout@v4
     - name: Install Rust with cargo
@@ -38,5 +32,11 @@ jobs:
         target: ${{ matrix.rust-target }}
     - name: Run build
       run: cargo build
-    - name: Run unit tests
-      run: cargo test --verbose
+    - name: Setup xvfb for x11 and run tests
+      shell: bash
+      run: |
+        if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
+          export DISPLAY=:99
+          Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+        fi
+        cargo test --verbose

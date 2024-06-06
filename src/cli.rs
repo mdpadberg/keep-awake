@@ -1,34 +1,81 @@
-use crate::{keyboard::Keyboard, mouse::Mouse, programname::ProgramName, settings::Settings};
-use clap::{ArgMatches, Command};
+use std::{thread::sleep, time::Duration};
 
-pub trait MySubCommand {
-    const NAME: &'static str;
-    fn command() -> Command;
-    fn action(args: &ArgMatches);
+use chrono::Local;
+use clap::{Parser, ValueEnum};
+use enigo::{Enigo, Settings};
+use rand::{thread_rng, Rng};
+
+use crate::{keyboard::keyboard, mouse::mouse};
+
+#[derive(Parser)]
+#[command(name = "ka")]
+#[command(bin_name = "ka")]
+enum Ka {
+    /// Use keyboard and mouse to keep your machine awake [default random mouse movements & tab & windows/super/command]
+    KeyboardAndMouse(Args),
+    /// Use keyboard to keep your machine awake [default tab & windows/super/command]
+    Keyboard(Args),
+    /// Use mouse to keep your machine awake [default random mouse movements]
+    Mouse(Args),
 }
 
-pub fn parse() {
-    let settings = Settings::load().unwrap_or(Settings {
-        application_name: String::from("ka"),
-    });
-    let application_name: &str = settings.application_name.leak();
+#[derive(clap::Args, Debug)]
+#[command(version, about)]
+struct Args {
+    ///How long you want this command to run
+    time: u32,
 
-    let matches = Command::new(application_name)
-        .bin_name(application_name)
-        .version(env!("CARGO_PKG_VERSION"))
-        .about("Keep you machine awake")
-        .arg_required_else_help(true)
-        .subcommands(vec![
-            Mouse::command(),
-            ProgramName::command(),
-            Keyboard::command(),
-        ])
-        .get_matches();
+    ///Timeunit
+    #[arg(short, long, value_enum, default_value_t=TimeUnit::Minutes)]
+    timeunit: TimeUnit,
+}
 
-    match matches.subcommand() {
-        Some((Mouse::NAME, args)) => Mouse::action(args),
-        Some((ProgramName::NAME, args)) => ProgramName::action(args),
-        Some((Keyboard::NAME, args)) => Keyboard::action(args),
-        _ => unreachable!(),
+#[derive(Debug, Clone, ValueEnum)]
+enum TimeUnit {
+    Hours,
+    Minutes,
+}
+
+// TODO:
+// - add Runtime dependencies for linux in readme
+// - fix readme on how to run
+
+pub fn parse() -> anyhow::Result<()> {
+    let mut enigo = Enigo::new(&Settings::default())?;
+    match Ka::parse() {
+        Ka::Keyboard(args) => {
+            run_in_loop(args, &mut enigo, vec![keyboard])?;
+        }
+        Ka::Mouse(args) => {
+            run_in_loop(args, &mut enigo, vec![mouse])?;
+        }
+        Ka::KeyboardAndMouse(args) => {
+            run_in_loop(args, &mut enigo, vec![keyboard, mouse, mouse, mouse, mouse])?;
+        }
+    };
+    Ok(())
+}
+
+fn run_in_loop(
+    args: Args,
+    enigo: &mut Enigo,
+    functions: Vec<impl Fn(&mut Enigo) -> Result<(), anyhow::Error>>,
+) -> anyhow::Result<()> {
+    let start_time = Local::now();
+    let time_to_run_in_seconds = match args.timeunit {
+        TimeUnit::Hours => args.time * 3600,
+        TimeUnit::Minutes => args.time * 60,
+    };
+    let mut rng = thread_rng();
+    'outer: loop {
+        let wait_amount_of_seconds_between_functions: u64 = rng.gen_range(2..30);
+        for f in &functions {
+            if ((Local::now().timestamp() - start_time.timestamp()) as u32) > time_to_run_in_seconds {
+                break 'outer;
+            }
+            sleep(Duration::from_secs(wait_amount_of_seconds_between_functions));
+            f(enigo)?;
+        }
     }
+    Ok(())
 }
