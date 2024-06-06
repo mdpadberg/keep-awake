@@ -37,15 +37,11 @@ jobs:
         if [ "${{ matrix.os }}" = "windows-latest" ]; then
           git config --global core.autocrlf false
         fi
-    - name: Install xvfb on ubuntu to run x11 for enigo
+    - name: Install libxdo on ubuntu for enigo
       shell: bash
       run: |
         if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
-          TZ=Europe/Amsterdam
-          ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-          sudo apt install -y xvfb
-          export DISPLAY=:99
-          Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+          sudo apt install libxdo-dev
         fi
     - name: Checkout project
       uses: actions/checkout@v4
