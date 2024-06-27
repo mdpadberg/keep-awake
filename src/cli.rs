@@ -36,10 +36,6 @@ enum TimeUnit {
     Minutes,
 }
 
-// TODO:
-// - add Runtime dependencies for linux in readme
-// - fix readme on how to run
-
 pub fn parse() -> anyhow::Result<()> {
     let mut enigo = Enigo::new(&Settings::default())?;
     match Ka::parse() {
